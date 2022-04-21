@@ -10,25 +10,21 @@ jobs:
       run:
         shell: bash
     steps:
-      - uses: actions/checkout@v3
-      - name: inst
-        run: |
-          sudo apt install g++ cmake lcov
-          git submodule add https://github.com/google/googletest
-      - name: build-run-test
-        run: |
-          mkdir build
-          cd build
-          cmake ..
-          cmake --build .
-      - name: run-test
-        run: ./build/lib_test
-      - name: info
-        run: |
-          mkdir coverage
-          cd coverage
-          lcov -t "test" -o lcov.info -c -d ../build/bank/CMakeFiles/banking.dir 
-      - name: Coveralls GitHub Action
-        uses: coverallsapp/github-action@1.1.3
-        with:
-          github-token: ${{ secrets.github_token }}
+    - uses: actions/checkout@v3
+    - name: inst
+      run: sudo apt install cmake g++ lcov
+    - name: build
+      run: |
+        cmake . -DBUILD_TESTS=ON -DCOVERALLS=ON
+        cmake —build .
+        cmake —build . -t test — ARGS=--verbose
+        cd ..
+    - name: coverage
+      run: |
+        mkdir coverage
+        lcov -d . -t bank_tests -o coverage/lcov.info -b . -c —no-external
+        lcov —remove coverage/lcov.info '*/gtest/*' '*/gmock/*' '*/include/*' -o coverage/lcov.info
+    - name: Coveralls
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.github_token }}
