@@ -16,12 +16,12 @@ jobs:
       run: |
         cmake . -DBUILD_TESTS=ON -DCOVERALLS=ON
         cmake --build .
-        cmake --build . -t test --ARGS=--verbose
+        cmake --build . -t test -ARGS=--verbose
         cd ..
     - name: coverage
       run: |
         mkdir coverage
-        lcov -d . -t bank_tests -o coverage/lcov.info -b . -c —no-external
+        lcov -d . -t bank_tests -o coverage/lcov.info -b . -c --no-external
         lcov --remove coverage/lcov.info '*/gtest/*' '*/gmock/*' '*/include/*' -o coverage/lcov.info
     - name: coveralls
       uses: coverallsapp/github-action@master
