@@ -15,8 +15,8 @@ jobs:
     - name: build
       run: |
         cmake . -DBUILD_TESTS=ON -DCOVERALLS=ON
-        cmake -build .
-        cmake -build . -t test -ARGS=--verbose
+        cmake --build .
+        cmake --build . -t test -- ARGS=--verbose
         cd ..
     - name: coverage
       run: |
