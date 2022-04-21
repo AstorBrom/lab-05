@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.4)
+cmake_minimum_required(VERSION 3.0)
 project(banking)
 add_library(${PROJECT_NAME} STATIC Account.cpp Transaction.cpp)
 target_compile_options(${PROJECT_NAME} PRIVATE "--coverage")
